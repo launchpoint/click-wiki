@@ -1,0 +1,25 @@
+.panel
+  .title
+    +$version->title
+  .header
+    =join(" > ", $links)
+  .instructions
+    =se("Edit using Markdown")
+  .body
+    =form_for($wiki)
+    =se("Path")
+    %br
+    =text_field('path')
+    %br
+    =fields_for($version)
+    =se("Title")
+    %br
+    =text_field('title')
+    %br
+    =se("Body")
+    %br
+    =textarea_field('body', 'class', 'expanding')
+    %br
+    =end_fields_for()
+    =submit_tag('Save')
+    =end_form_for()

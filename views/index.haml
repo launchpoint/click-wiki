@@ -1,0 +1,10 @@
+.panel
+  .item
+    .title
+      =se("Welcome to the University")
+    .body 
+      -foreach($topics as $topic)
+        =str_repeat("..", count(split('\|', $topic->path))-1)
+        %a{:href=>view_wiki_topic_url($topic)}
+          +$topic->current_version->title
+        %br

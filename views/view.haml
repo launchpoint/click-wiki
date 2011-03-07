@@ -1,0 +1,40 @@
+.panel
+  .item
+    .title
+      .title_left
+        -if($article)
+          +$article->current_version->title
+        -else
+          =se("No Topic")
+      .title_right
+        -if($article)
+          -if(logged_in() && $current_user->has_access('wiki_editor'))
+            .admin
+              %a{:href=>edit_wiki_topic_url($params['path'])} =se("edit")
+              |
+              =link_to('up', move_wiki_topic_url($params['path'], 'up'))
+              |
+              =link_to('down', move_wiki_topic_url($params['path'], 'down'))
+        -else
+          -if(logged_in() && $current_user->has_access('wiki_editor'))
+            .admin
+              %a{:href=>edit_wiki_topic_url($params['path'])} =se("create topic")
+      .clear
+    .header
+      =join(" &gt; ", $links)
+    .body
+      %table
+        %tr
+          %td.nowrap
+            -foreach($topics as $topic)
+              =str_repeat("..", count(split('\|', $topic->path))-1)
+              -$url = view_wiki_topic_url($topic)
+              -$css = endswith($url, $request_path) ? 'selected' : '';
+              %a{:href=>$url, :class=>$css}
+                +$topic->current_version->title
+              %br
+          %td
+            -if($article)
+              =markdown($article->current_version->body);
+            -else
+              =se("This topic has not been written yet.")
